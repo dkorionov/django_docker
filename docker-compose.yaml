@@ -1,6 +1,20 @@
 version: '3.4'
 
 services:
+  traefik:
+    image: traefik:v1.7.24
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - traefik/traefik.toml:/traefik.toml
+      - traefik/acme.json:/acme.json
+    container_name: traefik
+
   django_web:
     build: .
     container_name: django_web
