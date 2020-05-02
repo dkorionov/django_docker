@@ -1,0 +1,79 @@
+[
+  {
+    "model": "video_api.video",
+    "pk": 1,
+    "fields": {
+      "video": "/media/video/video1.mp4",
+      "title": "First video",
+      "description": "First video description",
+      "load_at": "2013-01-16T08:16:59.844Z",
+      "premium": true
+    }
+  },
+  {
+    "model": "video_api.video",
+    "pk": 2,
+    "fields": {
+      "video": "/media/video/video2.mp4",
+      "title": "Second video",
+      "description": "Second video description",
+      "load_at": "2013-01-16T08:16:59.844Z",
+      "premium": false
+    }
+  },
+  {
+    "model": "video_api.video",
+    "pk": 3,
+    "fields": {
+      "video": "/media/video/video3.mp4",
+      "title": "Third video",
+      "description": "Third video description",
+      "load_at": "2013-01-16T08:16:59.844Z",
+      "premium": false
+    }
+  },
+  {
+    "model": "video_api.video",
+    "pk": 4,
+    "fields": {
+      "video": "/media/video/video4.mp4",
+      "title": "Fourth video",
+      "description": "Fourth video description",
+      "load_at": "2013-01-16T08:16:59.844Z",
+      "premium": true
+    }
+  },
+  {
+    "model": "video_api.video",
+    "pk": 5,
+    "fields": {
+      "video": "/media/video/video5.mp4",
+      "title": "Fifth video",
+      "description": "Fifth video description",
+      "load_at": "2013-01-16T08:16:59.844Z",
+      "premium": true
+    }
+  },
+  {
+    "model": "video_api.video",
+    "pk": 6,
+    "fields": {
+      "video": "/media/video/video6.mp4",
+      "title": "Sixth video",
+      "description": "Sixth video description",
+      "load_at": "2013-01-16T08:16:59.844Z",
+      "premium": false
+    }
+  },
+  {
+    "model": "video_api.video",
+    "pk": 7,
+    "fields": {
+      "video": "/media/video/video7.mp4",
+      "title": "Seventh video",
+      "description": "Seventh video description",
+      "load_at": "2013-01-16T08:16:59.844Z",
+      "premium": false
+    }
+  }
+]

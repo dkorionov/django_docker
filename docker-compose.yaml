@@ -1,0 +1,76 @@
+version: '3.4'
+
+services:
+  django_web:
+    build: .
+    container_name: django_web
+    image: python-scope:latest
+    command: /docker-entrypoint.sh
+    volumes:
+      - ./django_api:/var/www/django_api:rw
+      - ./docker/web/docker-entrypoint.sh:/docker-entrypoint.sh:ro
+    ports:
+      - "${HTTP_BIND_PORT:-8000}:8000"
+    environment:
+      - SECRET_KEY=${SECRET_KEY:-secret}
+      - POSTGRES_HOST=${POSTGRES_HOST:-django_postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-django_api}
+      - POSTGRES_USER=${POSTGRES_USER:-django_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
+      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
+      - CONFIG_FILE=django_project/config.py
+      - ALLOWED_HOST=${ALLOWED_HOST:-localhost}
+    depends_on:
+      - django_postgres
+    networks:
+      - django_net
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10M"
+        max-file: "5"
+
+  django_postgres:
+    image: postgres:11.4
+    container_name: django_postgres
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-postgres}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
+    volumes:
+      - ${DATA_FOLDER:-./data}/postgress:/var/lib/postgresql/data:rw
+    networks:
+      - django_net
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10M"
+        max-file: "5"
+
+  nginx:
+    image: nginx:1.17
+    container_name: django_nginx
+    volumes:
+      - ./docker/nginx:/etc/nginx/conf.d:ro
+      - ./django_api/static:/var/www/django_api/static:ro
+      - ./django_api/media:/var/www/django_api/media:ro
+    ports:
+      - "${HTTP_BIND_PORT_NGINX:-80}:80"
+    restart: unless-stopped
+    networks:
+      - django_net
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10M"
+        max-file: "5"
+
+networks:
+  django_net:
+    driver: bridge
+    internal: false
+
+
