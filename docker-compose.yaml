@@ -69,19 +69,17 @@ services:
         max-size: "10M"
         max-file: "5"
 
-  redis:
-    image: redis:alpine
-    container_name: django_redis
-    ports:
-      - "${REDIS_PORT:-6379}:6379"
-    networks:
-      - proxy
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10M"
-        max-file: "5"
+#  redis:
+#    image: redis:alpine
+#    container_name: django_redis
+#    ports:
+#      - "${REDIS_PORT:-6379}:6379"
+#    restart: unless-stopped
+#    logging:
+#      driver: "json-file"
+#      options:
+#        max-size: "10M"
+#        max-file: "5"
 
 networks:
   django_net:

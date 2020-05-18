@@ -43,5 +43,4 @@ fi
 
 python manage.py migrate
 python manage.py collectstatic --noinput
-#gunicorn django_project.wsgi -b 0.0.0.0:${BIND_PORT:-8000}
-python manage.py runserver 0.0.0.0:8000
+gunicorn django_project.wsgi -b 0.0.0.0:${BIND_PORT:-8000}
