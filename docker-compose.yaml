@@ -1,20 +1,5 @@
 version: '3.4'
-
 services:
-  traefik:
-    image: traefik:v1.7.24
-    restart: unless-stopped
-    ports:
-      - 80:80
-      - 443:443
-    networks:
-      - proxy
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - traefik/traefik.toml:/traefik.toml
-      - traefik/acme.json:/acme.json
-    container_name: traefik
-
   django_web:
     build: .
     container_name: django_web
@@ -28,9 +13,9 @@ services:
     environment:
       - SECRET_KEY=${SECRET_KEY:-secret}
       - POSTGRES_HOST=${POSTGRES_HOST:-django_postgres}
-      - POSTGRES_DB=${POSTGRES_DB:-django_api}
-      - POSTGRES_USER=${POSTGRES_USER:-django_user}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
+      - POSTGRES_DB=${POSTGRES_DB:-postgres}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
       - POSTGRES_PORT=${POSTGRES_PORT:-5432}
       - CONFIG_FILE=django_project/config.py
       - ALLOWED_HOST=${ALLOWED_HOST:-localhost}
@@ -48,11 +33,13 @@ services:
   django_postgres:
     image: postgres:11.4
     container_name: django_postgres
-    environment:
-      - POSTGRES_DB=${POSTGRES_DB:-postgres}
-      - POSTGRES_USER=${POSTGRES_USER:-postgres}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
-      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
+#    environment:
+##      - POSTGRES_DB=${POSTGRES_DB:-postgres}
+##      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+##      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+##      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
+    env_file:
+      - .env.dev
     volumes:
       - ${DATA_FOLDER:-./data}/postgress:/var/lib/postgresql/data:rw
     networks:
@@ -76,6 +63,20 @@ services:
     restart: unless-stopped
     networks:
       - django_net
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10M"
+        max-file: "5"
+
+  redis:
+    image: redis:alpine
+    container_name: django_redis
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    networks:
+      - proxy
+    restart: unless-stopped
     logging:
       driver: "json-file"
       options:
