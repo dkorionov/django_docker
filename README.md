@@ -1,6 +1,4 @@
 # This repository represents Docker configuration for Django-applications.
-## Features of this configuration are mobility and scalability. Also, thanks to the config.py file, you can easily switch between local and real development.
-
 ## Deployment instruction
 1. Pre-requirements: Need to install docker and docker-compose.
 1. Clone repository to necessary directory(for example to `/opt`)
